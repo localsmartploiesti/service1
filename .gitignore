@@ -7,11 +7,6 @@ dist/
 # Node modules (dependințe)
 node_modules/
 
-# Local env files
-.env
-.env.local
-.env.*.local
-
 # Supabase generated/temp files
 supabase/.temp/
 supabase/cli-latest
