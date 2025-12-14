@@ -1,0 +1,18 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="1080" fill="#0a0a0a"/>
+  
+  <!-- Sidebar -->
+  <rect x="0" y="0" width="400" height="1080" fill="#000000" stroke-right="#333" stroke-width="2"/>
+  <text x="200" y="80" font-family="Arial, sans-serif" font-weight="900" font-size="40" text-anchor="middle" fill="#ffffff" letter-spacing="2">ELITE <tspan fill="#ca8a04">DETAILING</tspan></text>
+  
+  <!-- Menu Items -->
+  <rect x="40" y="150" width="320" height="60" rx="10" fill="#ca8a04"/>
+  <text x="200" y="192" font-family="Arial, sans-serif" font-weight="bold" font-size="24" text-anchor="middle" fill="#000">CALENDAR</text>
+  
+  <rect x="40" y="230" width="320" height="60" rx="10" fill="#1a1a1a"/>
+  <text x="200" y="272" font-family="Arial, sans-serif" font-weight="bold" font-size="24" text-anchor="middle" fill="#666">SERVICII</text>
+
+  <!-- Main Content -->
+  <rect x="440" y="40" width="1440" height="1000" rx="20" fill="#111" stroke="#333" stroke-width="4"/>
+  <text x="1160" y="540" font-family="Arial, sans-serif" font-size="60" text-anchor="middle" fill="#333">DASHBOARD PREVIEW</text>
+</svg>
