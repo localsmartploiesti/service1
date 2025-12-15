@@ -3,7 +3,7 @@
   
   <!-- Sidebar -->
   <rect x="0" y="0" width="400" height="1080" fill="#000000" stroke-right="#333" stroke-width="2"/>
-  <text x="200" y="80" font-family="Arial, sans-serif" font-weight="900" font-size="40" text-anchor="middle" fill="#ffffff" letter-spacing="2">ELITE <tspan fill="#ca8a04">DETAILING</tspan></text>
+  <text x="200" y="80" font-family="Arial, sans-serif" font-weight="900" font-size="40" text-anchor="middle" fill="#ffffff" letter-spacing="2">SERVICE <tspan fill="#ca8a04">AUTO</tspan></text>
   
   <!-- Menu Items -->
   <rect x="40" y="150" width="320" height="60" rx="10" fill="#ca8a04"/>

@@ -3,7 +3,7 @@
   
   <!-- Header -->
   <rect x="0" y="0" width="1080" height="180" fill="#000000"/>
-  <text x="540" y="110" font-family="Arial, sans-serif" font-weight="900" font-size="60" text-anchor="middle" fill="#ffffff" letter-spacing="4">ELITE <tspan fill="#ca8a04">DETAILING</tspan></text>
+  <text x="540" y="110" font-family="Arial, sans-serif" font-weight="900" font-size="60" text-anchor="middle" fill="#ffffff" letter-spacing="4">SERVICII <tspan fill="#ca8a04">AUTO</tspan></text>
   
   <!-- Calendar Area -->
   <rect x="40" y="220" width="1000" height="800" rx="20" fill="#111111" stroke="#333" stroke-width="4"/>

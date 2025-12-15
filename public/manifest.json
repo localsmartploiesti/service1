@@ -1,6 +1,6 @@
 {
-  "name": "Elite Detailing App",
-  "short_name": "EliteDetail",
+  "name": "Service Auto App",
+  "short_name": "ServiceAuto",
   "description": "Sistem de gestiune programări și servicii auto",
   "start_url": "/",
   "display": "standalone",

@@ -15,3 +15,5 @@ supabase/pooler-url
 supabase/rest-url
 supabase/storage-url
 supabase/
+
+database/
