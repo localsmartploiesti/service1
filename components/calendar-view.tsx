@@ -56,9 +56,10 @@ export default function CalendarView({ userRole }: CalendarViewProps) {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) return
 
+    // MODIFICARE: Fetch creator info using the foreign key relationship
     const { data, error } = await supabase
       .from('events')
-      .select('*')
+      .select('*, creator:profiles!created_by(full_name)')
       .order('event_date', { ascending: true })
       .order('start_time', { ascending: true })
 
@@ -83,6 +84,9 @@ export default function CalendarView({ userRole }: CalendarViewProps) {
       employees: row.employees || [],
       services: row.services || [],
       multiDay: row.multi_day ?? false,
+      // MODIFICARE: Pass creator info and created_at to the event object
+      creator: row.creator,
+      created_at: row.created_at
     }))
     setEvents(mapped)
   }, [])
@@ -152,6 +156,10 @@ export default function CalendarView({ userRole }: CalendarViewProps) {
   }
 
   const handleSaveEvent = async (eventData: any) => {
+    // Get current user ID for created_by field
+    const { data: { user } } = await supabase.auth.getUser()
+    const currentUserId = user?.id
+
     let clientData = eventData.clients
     
     if (clientData?.isNew && clientData.name) {
@@ -172,7 +180,6 @@ export default function CalendarView({ userRole }: CalendarViewProps) {
 
     const durationDays = eventData.duration || 1
     
-    // MODIFICARE AICI: Parsare sigura in Integer sau Null
     const sanitizedPrice = (eventData.price && eventData.price !== '') 
         ? parseInt(eventData.price, 10) 
         : null;
@@ -204,6 +211,10 @@ export default function CalendarView({ userRole }: CalendarViewProps) {
             employees: eventData.employees ?? [],
             services: eventData.services ?? [],
             multi_day: durationDays > 1,
+            // MODIFICARE: Add created_by only for new events (handled below logic)
+            // Ideally we add it here, but update shouldn't overwrite it if not needed.
+            // For insert it will be added in the insert block.
+            created_by: currentUserId 
         })
 
         currentProcessingDate.setDate(currentProcessingDate.getDate() + 1)
@@ -213,9 +224,12 @@ export default function CalendarView({ userRole }: CalendarViewProps) {
 
     if (editingEvent) {
       const payload = payloads[0] 
+      // Remove created_by from update payload to preserve original creator
+      const { created_by, ...updatePayload } = payload
+      
       const { error } = await supabase
         .from('events')
-        .update(payload)
+        .update(updatePayload)
         .eq('id', editingEvent.id)
       if (error) console.error('update event error', error)
       setEditingEvent(null)

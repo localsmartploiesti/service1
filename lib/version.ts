@@ -1,4 +1,4 @@
-export const APP_VERSION = "1.2";
+export const APP_VERSION = "1.3";
 export const BUILD_DATE = "08 Dec 2025";
 
 // Configurare Nume Business

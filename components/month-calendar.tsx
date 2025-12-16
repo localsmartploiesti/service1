@@ -21,7 +21,6 @@ export default function MonthCalendar({
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
   }
 
-  // Calculăm prima zi a lunii ajustată pentru Luni ca start (Luni=0 ... Duminica=6)
   const getFirstDayOfMonth = (date: Date) => {
     const day = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
     return day === 0 ? 6 : day - 1
@@ -31,12 +30,10 @@ export default function MonthCalendar({
   const firstDay = getFirstDayOfMonth(currentDate)
   const days = []
 
-  // Adăugăm celulele goale de la începutul lunii
   for (let i = 0; i < firstDay; i++) {
     days.push(null)
   }
 
-  // Adăugăm zilele efective
   for (let i = 1; i <= daysInMonth; i++) {
     days.push(new Date(currentDate.getFullYear(), currentDate.getMonth(), i))
   }
@@ -52,21 +49,12 @@ export default function MonthCalendar({
     )
   }
 
-  // --- MODIFICARE AICI: Logică identică cu dayview.tsx ---
   const getServiceColor = (event: any) => {
-    // Luăm primul serviciu din lista evenimentului
     const serviceName = event.services?.[0];
-    
-    // Dacă nu există serviciu, returnăm gri închis (ca în DayView)
     if (!serviceName) return '#3f3f46'; 
-
-    // Căutăm serviciul în lista de servicii
     const service = services.find((s) => s.name === serviceName);
-    
-    // Returnăm culoarea serviciului sau Roșu ca fallback (ca în DayView)
     return service?.color || '#ef4444';
   }
-  // -----------------------------------------------------
 
   const isDateSelected = (date: Date) => {
     return (
@@ -79,7 +67,7 @@ export default function MonthCalendar({
 
   return (
     <div className="space-y-1 md:space-y-2 w-full mx-auto">
-      {/* Header Zile */}
+      {/* Day Headers */}
       <div className="grid grid-cols-7 gap-0.5 md:gap-1">
         {weekDays.map((day, index) => {
            const isWeekendHeader = index >= 5
@@ -96,7 +84,7 @@ export default function MonthCalendar({
         })}
       </div>
 
-      {/* Grid Zile */}
+      {/* Days Grid */}
       <div className="grid grid-cols-7 gap-0.5 md:gap-1">
         {days.map((date, index) => {
           const isCurrentMonth = date !== null
@@ -108,40 +96,59 @@ export default function MonthCalendar({
           
           const isWeekend = (index % 7 === 5) || (index % 7 === 6)
 
+          let bgClass = 'bg-transparent'
+          let borderClass = 'border-transparent'
+          let textClass = 'text-muted-foreground/30'
+
+          if (isCurrentMonth) {
+              if (isSelected) {
+                  if (isToday) {
+                      bgClass = 'bg-yellow-500/20' 
+                      borderClass = 'border-yellow-500'
+                  } else {
+                      bgClass = 'bg-primary/20' 
+                      borderClass = 'border-primary'
+                  }
+              } else {
+                  if (isWeekend) {
+                      bgClass = 'bg-white/5 hover:bg-white/10'
+                      borderClass = 'border-zinc-800'
+                  } else {
+                      bgClass = 'bg-secondary/30 hover:bg-secondary/50'
+                      borderClass = 'border-border'
+                  }
+              }
+              textClass = '' 
+          } else if (isWeekend) {
+              bgClass = 'bg-white/5'
+          }
+
+          const ringClass = isToday ? 'ring-1 md:ring-2 ring-yellow-500' : ''
+
           return (
             <div
               key={index}
               onClick={() => date && onDayClick(date)}
-              className={`relative flex flex-col items-center justify-center rounded-md border md:border-2 h-10 md:h-12 cursor-pointer transition-all ${
-                // Logică fundal:
-                isCurrentMonth
-                  ? isWeekend 
-                      ? 'bg-white/5 hover:bg-white/10 border-zinc-800' // Weekend activ (palid)
-                      : 'bg-secondary/30 hover:bg-secondary/50' // Zi săptămână activă
-                  : isWeekend
-                      ? 'bg-white/5 border-transparent' // Weekend padding
-                      : 'bg-transparent text-muted-foreground/30 border-transparent' // Zi săptămână padding
-              } ${isToday ? 'ring-1 md:ring-2 ring-primary' : ''} ${
-                isSelected ? 'border-primary bg-primary/10' : isCurrentMonth && !isWeekend ? 'border-border' : ''
-              }`}
+              className={`relative flex flex-col items-center justify-center rounded-md border md:border-2 h-10 md:h-12 cursor-pointer transition-all 
+                ${bgClass} ${borderClass} ${ringClass} ${textClass}`}
             >
               {date && (
                 <>
-                  <div className={`text-sm md:text-xs font-bold leading-none ${isToday ? 'text-primary' : isSelected ? 'text-primary font-extrabold' : isWeekend ? 'text-neutral-400' : 'text-neutral-300'}`}>
+                  <div className={`text-sm md:text-xs font-bold leading-none 
+                    ${isToday ? 'text-yellow-500' : isSelected ? 'text-white font-extrabold' : isWeekend ? 'text-neutral-400' : 'text-neutral-300'}`}>
                     {date.getDate()}
                   </div>
                   
-                  <div className="flex gap-0.5 mt-0.5 md:mt-1">
-                    {dayEvents.slice(0, 3).map((event, i) => (
+                  {/* MODIFICARE: Afișăm TOATE punctele, fără limită */}
+                  <div className="flex gap-0.5 mt-0.5 md:mt-1 flex-wrap justify-center px-0.5 content-start w-full">
+                    {dayEvents.map((event) => (
                       <div
                         key={event.id}
-                        className="w-1.5 h-1.5 md:w-1.5 md:h-1.5 rounded-full"
+                        // Am micșorat puțin punctele pe mobil ca să încapă mai multe
+                        className="w-1.5 h-1.5 md:w-1.5 md:h-1.5 rounded-full shrink-0"
                         style={{ backgroundColor: getServiceColor(event) }}
                       />
                     ))}
-                    {dayEvents.length > 3 && (
-                        <div className="w-1.5 h-1.5 md:w-1.5 md:h-1.5 rounded-full bg-gray-500" />
-                    )}
                   </div>
                 </>
               )}

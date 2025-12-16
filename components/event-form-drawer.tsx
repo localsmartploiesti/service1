@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { X, User, Calendar, Clock, Car, Layers, Search, Plus, Check, FileText, Banknote, Phone, Edit2, ArrowLeft } from 'lucide-react'
+import { X, User, Calendar, Clock, Car, Layers, Search, Plus, Check, FileText, Banknote, Phone, Edit2, ArrowLeft, UserCog } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -152,6 +152,10 @@ export default function EventFormDrawer({
     const clientName = editingEvent?.clients?.name || 'Client Necunoscut'
     const clientPhone = editingEvent?.clients?.phone || ''
     
+    // --- NOUL BLOC DE DATE ---
+    const creatorName = editingEvent?.creator?.full_name || 'Sistem / Necunoscut'
+    const createdAt = editingEvent?.created_at ? new Date(editingEvent.created_at) : null
+    
     return (
       <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
         <div className="w-full max-w-md h-full bg-[#111] text-white flex flex-col shadow-2xl animate-in slide-in-from-right duration-300 border-l border-neutral-800">
@@ -234,6 +238,29 @@ export default function EventFormDrawer({
                     </div>
                 )}
 
+                {/* --- SECTIUNE NOUA: INFO CREARE --- */}
+                <div className="bg-neutral-900/30 p-3 rounded-lg border border-neutral-800/30 flex flex-col gap-2 mt-4">
+                    <div className="flex justify-between items-center">
+                        <span className="text-[10px] text-neutral-500 uppercase font-bold tracking-wider flex items-center gap-1">
+                            <UserCog className="w-3 h-3" /> Creat de
+                        </span>
+                        <span className="text-xs text-yellow-500 font-bold">
+                            {creatorName}
+                        </span>
+                    </div>
+                    <div className="flex justify-between items-center border-t border-neutral-800/50 pt-2">
+                        <span className="text-[10px] text-neutral-500 uppercase font-bold tracking-wider">
+                            Data inserării
+                        </span>
+                        <span className="text-xs text-neutral-400 font-mono">
+                            {createdAt ? createdAt.toLocaleString('ro-RO', {
+                                day: '2-digit', month: 'short', year: 'numeric',
+                                hour: '2-digit', minute: '2-digit'
+                            }) : '-'}
+                        </span>
+                    </div>
+                </div>
+
                 <div className="flex items-center justify-between text-xs text-neutral-500 border-t border-neutral-800 pt-4">
                     <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" /> {date.toLocaleDateString('ro-RO')}
@@ -255,7 +282,7 @@ export default function EventFormDrawer({
                     onClick={onClose}
                     className="flex-1 py-6 bg-yellow-600 hover:bg-yellow-500 text-black font-black uppercase tracking-widest"
                 >
-                    Inchide
+                    <X className="w-4 h-4 mr-2" /> Inchide
                 </Button>
             </div>
         </div>
